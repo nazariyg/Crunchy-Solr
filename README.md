@@ -65,26 +65,26 @@
 * may additionally specify which fields are required and how to index and search each field
 * some of the filed types predefined by examples are:
 
-***
+```python
 
-        boolean
-        int
-        float
-        long
-        double
-        date
-        binary
-        string
-        text_ws
-        text_general
-        text_en
-        text_en_splitting
-        text_en_splitting_tight
-        lowercase
-        point
-        location
+boolean
+int
+float
+long
+double
+date
+binary
+string
+text_ws
+text_general
+text_en
+text_en_splitting
+text_en_splitting_tight
+lowercase
+point
+location
 
-***
+```
 
 * the Solr internal type behind the `text_...` types is `solr.TextField` for full-text search, which allows the specification of custom text analyzers/transformers specified as a tokenizer and a list of token filters; different analyzers/transformers/filters may be specified for index-time and query-time
 * unlike with other textual types, values of `string` type are not analyzed/transformed and are indexed/stored verbatim
@@ -92,25 +92,25 @@
 * fields are declared with `<fields>` and `<field>` tags, e.g. `<fields> <field name="somefield" type="string" indexed="true" stored="true" /> ...`
 * some of the available field attributes are:
 
-***
+```python
 
-        name            # the field's name; required
-        type            # the field's locally defined type; required
-        indexed         # whether the field should be searchable or sortable
-        stored          # whether the field is retrievable
-        multiValued     # whether the field consists of separate values
-        required        # whether to throw an error if the field's value does not exist
-        default         # a value that should be used if no value is specified at index-time
+name            # the field's name; required
+type            # the field's locally defined type; required
+indexed         # whether the field should be searchable or sortable
+stored          # whether the field is retrievable
+multiValued     # whether the field consists of separate values
+required        # whether to throw an error if the field's value does not exist
+default         # a value that should be used if no value is specified at index-time
 
-        # advanced:
+# advanced:
 
-        docValues
-        omitNorms
-        termVectors
-        termPositions
-        termOffsets
+docValues
+omitNorms
+termVectors
+termPositions
+termOffsets
 
-***
+```
 
 * a summary of common use cases and the attributes the fields or field types should have to support the case are in https://cwiki.apache.org/confluence/display/solr/Field+Properties+by+Use+Case
 
@@ -121,29 +121,29 @@
 * a core can have multiple request handlers defined with `<requestHandler>` tag, e.g. `<requestHandler name="/<handler>" class="solr.SearchHandler">`; additional handlers can be defined to customize search scope, sorting, etc.
 * a request handler can specify default query parameters with `<lst name="defaults">` tag, e.g.:
 
-***
+```xml
 
-        ...
-        <lst name="defaults">
-            <str name="echoParams">explicit</str>
-            <str name="wt">json</str>
-            <str name="indent">true</str>
-            ...
-        </lst>
+...
+<lst name="defaults">
+    <str name="echoParams">explicit</str>
+    <str name="wt">json</str>
+    <str name="indent">true</str>
+    ...
+</lst>
 
-***
+```
 
 * a request handler has a configurable list of search components which perform the actual searching; default components are `QueryComponent`, `FacetComponent`, `MoreLikeThisComponent`, `HighlightComponent`, `StatsComponent`, `DebugComponent`
 * instead of redefining the list of default search components, custom components can be appended to the default ones as follows:
 
-***
+```xml
 
-        ...
-        <arr name="last-components">
-            <str>spellcheck</str>
-        </arr>
+...
+<arr name="last-components">
+    <str>spellcheck</str>
+</arr>
 
-***
+```
 
 ## Querying
 
@@ -170,16 +170,20 @@
 
 ### Query Syntax
 
-    title:apple                 # only search in title
-    title:apple name:pear       # only search in two fields
-    title:"apple pear"          # "apple" OR "pear"
-    apple AND pear              # "apple" AND "pear"
-    (apple AND pear) OR orange  # compound AND with OR
-    apple -pear                 # "apple" without "pear"
-    -pear                       # all but "pear"
-    app*                        # any matches that start with "app"
-    app*ar                      # any matches that start with "app" and end with "ar"
-    [1 TO 10]                   # in the range from 1 to 10, inclusive
-    [5 TO *]                    # with an open-ended upper limit
-    (apple or pear)^10.0        # boosted by factor 10.0
-    "apple pear"~5              # "apple" and "pear" with proximity of 5 from one another
+```python
+
+title:apple                 # only search in title
+title:apple name:pear       # only search in two fields
+title:"apple pear"          # "apple" OR "pear"
+apple AND pear              # "apple" AND "pear"
+(apple AND pear) OR orange  # compound AND with OR
+apple -pear                 # "apple" without "pear"
+-pear                       # all but "pear"
+app*                        # any matches that start with "app"
+app*ar                      # any matches that start with "app" and end with "ar"
+[1 TO 10]                   # in the range from 1 to 10, inclusive
+[5 TO *]                    # with an open-ended upper limit
+(apple or pear)^10.0        # boosted by factor 10.0
+"apple pear"~5              # "apple" and "pear" with proximity of 5 from one another
+
+```
